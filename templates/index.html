@@ -3,9 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>HIII    </h1>
+    <div class="container">
+        <header class="header">
+            <div>
+                <p class="eyebrow">Dashboard</p>
+                <h1>{{ title }}</h1>
+                <p class="subtitle">Track tickets and manage tasks from a simple web interface.</p>
+            </div>
+            <div class="header-meta">
+                <div class="meta-card">
+                    <span>Total tickets</span>
+                    <strong id="ticketCount">0</strong>
+                </div>
+                <div class="meta-card">
+                    <span>Open tickets</span>
+                    <strong id="openCount">0</strong>
+                </div>
+            </div>
+        </header>
+
+        <section class="controls">
+            <input id="searchInput" type="search" placeholder="Search tickets...">
+            <select id="statusFilter" aria-label="Filter tickets by status">
+                <option value="all">All statuses</option>
+                <option value="Open">Open</option>
+                <option value="In progress">In progress</option>
+                <option value="Done">Done</option>
+            </select>
+        </section>
+
+        <section class="ticket-board">
+            <div class="ticket-grid" id="ticketList" aria-live="polite">
+                {% for ticket in tickets %}
+                <article class="ticket-card" data-status="{{ ticket.status }}">
+                    <div class="ticket-header">
+                        <span class="ticket-badge">#{{ ticket.id }}</span>
+                        <span class="ticket-status {{ ticket.status | replace(' ', '-')}}">{{ ticket.status }}</span>
+                    </div>
+                    <h2>{{ ticket.title }}</h2>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="add-ticket">
+            <h2>Add a ticket</h2>
+            <form id="ticketForm">
+                <label for="ticketTitle">Title</label>
+                <input id="ticketTitle" type="text" placeholder="Describe the ticket" required>
+
+                <label for="ticketStatus">Status</label>
+                <select id="ticketStatus">
+                    <option value="Open">Open</option>
+                    <option value="In progress">In progress</option>
+                    <option value="Done">Done</option>
+                </select>
+
+                <button type="submit">Create ticket</button>
+            </form>
+        </section>
+    </div>
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
 </body>
 </html>
