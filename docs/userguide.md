@@ -4,124 +4,176 @@
 
 This is a simple ticket management web app built with Python and Flask. It shows ticket counts, lets you add new tickets, and stores data in a MariaDB database.
 
-## What you need before you start
+---
 
-- Python 3 installed.
-- MariaDB or MySQL installed.
-- A text editor and terminal / command prompt.
-- Basic comfort opening a folder and running a command.
+## 1. Before you start
 
-## Install dependencies
+You need:
+
+- Python 3
+- MariaDB or MySQL compatible database
+- A code editor (Visual Studio Code recommended)
+- A terminal / command line
+- A web browser
+
+---
+
+## 2. Install tools by operating system
 
 ### Windows
 
-1. Open PowerShell or Command Prompt.
-2. Navigate to the project folder. Example:
+1. Install Python:
+   - Go to https://www.python.org/downloads/windows
+   - Download the latest Python 3 installer
+   - Run the installer and check `Add Python to PATH`
+   - Click `Install Now`
+
+2. Install Visual Studio Code:
+   - Go to https://code.visualstudio.com/
+   - Download `Windows` version
+   - Install VS Code
+   - During install, check `Add to PATH` and `Open with Code`
+
+3. Install MariaDB:
+   - Go to https://mariadb.org/download/
+   - Choose Windows and download the latest stable version
+   - Install MariaDB and remember the root password you create
+
+4. Open a terminal:
+   - Press `Windows + R`, type `cmd`, and press Enter for Command Prompt
+   - Or type `powershell` for PowerShell
+   - Or open VS Code and press `Ctrl+`` (backtick)
+
+### macOS
+
+1. Install Python:
+   - Python 3 is usually pre-installed, but install the latest from https://www.python.org/downloads/macos
+   - Or use Homebrew: 
+     ```bash
+     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+     brew install python
+     ```
+
+2. Install Visual Studio Code:
+   - Go to https://code.visualstudio.com/
+   - Download `macOS` version
+   - Install VS Code
+
+3. Install MariaDB:
+   - Use Homebrew:
+     ```bash
+     brew install mariadb
+     brew services start mariadb
+     ```
+   - Or download from https://mariadb.org/download/
+
+4. Open a terminal:
+   - Press `Command + Space`, type `Terminal`, and press Enter
+   - Or open VS Code and press `Ctrl+`` (backtick)
+
+### Linux
+
+1. Install Python:
+   - Most Linux distributions already include Python 3
+   - Check with:
+     ```bash
+     python3 --version
+     ```
+   - If not installed, use your package manager. For Ubuntu/Debian:
+     ```bash
+     sudo apt update
+     sudo apt install python3 python3-pip
+     ```
+
+2. Install Visual Studio Code:
+   - Download from https://code.visualstudio.com/
+   - Or install with Snap on Ubuntu:
+     ```bash
+     sudo snap install --classic code
+     ```
+
+3. Install MariaDB:
+   - Ubuntu/Debian:
+     ```bash
+     sudo apt update
+     sudo apt install mariadb-server
+     sudo systemctl start mariadb
+     sudo systemctl enable mariadb
+     ```
+   - Fedora:
+     ```bash
+     sudo dnf install mariadb-server
+     sudo systemctl start mariadb
+     sudo systemctl enable mariadb
+     ```
+
+4. Open a terminal:
+   - Use the app menu and search for `Terminal`
+   - Or press `Ctrl+Alt+T`
+   - Or open VS Code and press `Ctrl+`` (backtick)
+
+---
+
+## 3. Open the project in VS Code
+
+1. Start VS Code.
+2. Click `File` → `Open Folder...`.
+3. Choose the project folder: `Eksamens/Eksamen`.
+4. Open `app.py` to view the main application code.
+
+---
+
+## 4. Install Python dependencies for this project
+
+Open a terminal in the project folder. If you are already in VS Code, use the built-in terminal.
+
+### Windows
 
 ```powershell
-cd C:\path\to\Eksamen
-```
-
-3. Install the required Python packages:
-
-```powershell
-python -m pip install --upgrade pip
+cd C:\Users\YourName\eksamen\Eksamen
 python -m pip install flask mariadb
 ```
 
-If `python` is not found, try `py` instead:
+### macOS / Linux
+
+```bash
+cd /home/stian/eksamen/Eksamen
+python3 -m pip install flask mariadb
+```
+
+If `python3` does not work, use `python` instead.
+
+---
+
+## 5. Set up MariaDB database and tables
+
+The app uses a MariaDB database named `eksamen` with two tables: `users` and `tickets`.
+
+### Start MariaDB server
+
+- Windows: start MariaDB from the Start menu or services app.
+- macOS: if installed with Homebrew, run `brew services start mariadb`.
+- Linux: run `sudo systemctl start mariadb`.
+
+### Open MariaDB shell
+
+#### Windows PowerShell / Command Prompt
 
 ```powershell
-py -m pip install --upgrade pip
-py -m pip install flask mariadb
+mariadb -u root -p
 ```
 
-### macOS
-
-1. Open Terminal.
-2. Navigate to the project folder:
+#### macOS / Linux
 
 ```bash
-cd /path/to/Eksamen
+sudo mariadb
 ```
 
-3. Install the required Python packages:
+Enter your MariaDB root password if asked.
 
-```bash
-python3 -m pip install --upgrade pip
-python3 -m pip install flask mariadb
-```
+### Create database and tables
 
-If your system uses `python` instead of `python3`, replace `python3` with `python`.
-
-### Linux
-
-1. Open Terminal.
-2. Navigate to the project folder:
-
-```bash
-cd /path/to/Eksamen
-```
-
-3. Install the required Python packages:
-
-```bash
-python3 -m pip install --upgrade pip
-python3 -m pip install flask mariadb
-```
-
-If your system uses `python` instead of `python3`, replace `python3` with `python`.
-
-## Install MariaDB / MySQL
-
-### Windows
-
-1. Download MariaDB from https://mariadb.org/download/ or install MySQL from https://dev.mysql.com/downloads/.
-2. Follow the installer instructions.
-3. Remember your database username and password.
-4. Open `MariaDB x.x Command Line Client` or use PowerShell with the `mysql` command.
-
-### macOS
-
-Use Homebrew if you have it installed:
-
-```bash
-brew install mariadb
-brew services start mariadb
-```
-
-If you prefer MySQL:
-
-```bash
-brew install mysql
-brew services start mysql
-```
-
-### Linux
-
-On Debian/Ubuntu:
-
-```bash
-sudo apt update
-sudo apt install mariadb-server
-sudo systemctl start mariadb
-```
-
-On Fedora/CentOS:
-
-```bash
-sudo dnf install mariadb-server
-sudo systemctl start mariadb
-```
-
-## Create the database and tables
-
-1. Open your database shell.
-
-- Windows: use the MariaDB Command Line Client or `mysql` in PowerShell.
-- macOS / Linux: use Terminal and run `sudo mariadb` or `mysql -u root -p`.
-
-2. Run these commands:
+Run these SQL commands in the MariaDB shell:
 
 ```sql
 CREATE DATABASE eksamen;
@@ -147,15 +199,17 @@ INSERT INTO users (username) VALUES
   ('Theo');
 ```
 
-3. Exit the database shell:
+Then exit:
 
 ```sql
 EXIT;
 ```
 
-## Configure the project
+---
 
-Open `app.py` and check the `get_db_connection()` function. Update the connection settings if your database username, password, host, or port are different.
+## 6. Configure the database connection in the app
+
+Open `app.py` and find the `get_db_connection()` function. Update the settings to match your MariaDB account:
 
 ```python
 def get_db_connection():
@@ -168,11 +222,18 @@ def get_db_connection():
     )
 ```
 
-If you changed your MariaDB password during setup, replace `1234` with the correct password.
+- `user`: your MariaDB username
+- `password`: your MariaDB password
+- `host`: usually `localhost`
+- `port`: usually `3306`
 
-## Run the app
+> If you use a different password than `1234`, update it here.
 
-From the project folder, start the app.
+---
+
+## 7. Run the web app
+
+From the project folder in a terminal:
 
 ### Windows
 
@@ -186,64 +247,83 @@ python app.py
 python3 app.py
 ```
 
-If your system uses `python` instead of `python3`, use `python app.py`.
-
-Open your browser and go to:
+If the app starts, open your browser and go to:
 
 ```text
 http://localhost:5000
 ```
 
-## How to use the app
+To stop the app, press `Ctrl+C` in the terminal.
+
+---
+
+## 8. How to use the app
 
 On the homepage you will see:
 
-- Total number of tickets.
-- Number of open tickets.
-- A form to create a new ticket.
-- A list of existing tickets.
+- Total number of tickets
+- Number of open tickets
+- A form to add a new ticket
+- A table with existing tickets
 
-To add a ticket:
+To create a ticket:
 
-1. Enter a title.
-2. Choose a ticket status.
-3. Select a user from the dropdown.
-4. Click the button to create the ticket.
+1. Enter a ticket title.
+2. Choose a status: `Open`, `In progress`, or `Done`.
+3. Choose a user or leave it empty.
+4. Click `Create ticket`.
 
-The ticket is saved in the database and the page updates automatically.
+The page will reload and show the new ticket.
 
-## Common problems and solutions
+---
 
-- App does not start:
-  - Make sure Flask and mariadb packages are installed.
-  - Check that you are running the command from the project folder.
+## 9. Common terminal commands
 
-- Browser shows an error or blank page:
-  - Verify that the app is running and using port `5000`.
-  - Open `http://localhost:5000` exactly.
+### Change directory to the project folder
 
-- Database connection error:
-  - Open `app.py` and confirm the host, user, password, database, and port values.
-  - Make sure MariaDB service is running.
+Windows:
 
-- No users appear in the dropdown:
-  - Check that the `users` table contains at least one record.
-  - Use the SQL `INSERT INTO users (...) VALUES (...)` command if needed.
+```powershell
+cd C:\Users\YourName\eksamen\Eksamen
+```
 
-## What this project does
+macOS / Linux:
 
-- Connects to a MariaDB database.
-- Shows total tickets and open tickets.
-- Displays tickets with assigned user names.
-- Lets you add new tickets.
+```bash
+cd /home/stian/eksamen/Eksamen
+```
 
-## Stop the app
+### Install Python packages
 
-Press `Ctrl+C` in the terminal where the app is running.
+```bash
+python3 -m pip install flask mariadb
+```
 
-## Beginner tips
+### Run the app
 
-- This app runs locally on your computer.
-- The password in `app.py` is only for local testing.
-- In a real project, do not hardcode passwords in source code.
-- You can change the text or styles in `templates/index.html` and `static/style.css`.
+```bash
+python3 app.py
+```
+
+### Stop the app
+
+Press `Ctrl+C`
+
+---
+
+## 10. Troubleshooting
+
+- If `python3` is not found, try `python`.
+- If `pip install` fails, check that Python is installed and added to your PATH.
+- If the app cannot connect to MariaDB, verify the username, password, database name, host, and port in `app.py`.
+- If the web page does not appear, make sure `http://localhost:5000` is entered exactly.
+- If no users appear in the dropdown, ensure the `users` table has records.
+
+---
+
+## 11. Notes for beginners
+
+- This project runs locally on your computer only.
+- Do not use the example password `1234` in a real project.
+- For production, use secure database credentials and environment variables.
+- If you are not sure what a command does, ask or search for that command name before running it.
