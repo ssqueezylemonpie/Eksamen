@@ -66,7 +66,7 @@ Optional example users:
 
 ```sql
 INSERT INTO users (username)
-VALUES ('Anna'), ('John'), ('Maria');
+VALUES ('Aleks'), ('John'), ('Theo');
 ```
 
 ## Installation

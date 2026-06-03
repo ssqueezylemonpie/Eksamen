@@ -52,7 +52,7 @@ def index():
 def add_ticket():
     title = request.form.get("title")
     status = request.form.get("status")
-    user_id = request.form.get("user_id") or None
+    user_id = request.form.get("user_id") 
 
     conn = get_db_connection()
     cursor = conn.cursor()
