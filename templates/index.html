@@ -1,11 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-    <h1>HIII    </h1>
+  <main class="container">
+    <section class="hero">
+      <p class="eyebrow">Exam Project</p>
+      <h1>{{ title }}</h1>
+      <p>A simple web app for tracking tickets and tasks.</p>
+    </section>
+
+    <section class="cards">
+      <article class="card">
+        <h2>Total tickets</h2>
+        <p>0</p>
+      </article>
+
+      <article class="card">
+        <h2>Open tickets</h2>
+        <p>0</p>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Add a ticket</h2>
+
+      <form>
+        <label for="title">Title</label>
+        <input id="title" type="text" placeholder="Write ticket title" />
+
+        <label for="status">Status</label>
+        <select id="status">
+          <option>Open</option>
+          <option>In progress</option>
+          <option>Done</option>
+        </select>
+
+        <button type="submit">Create ticket</button>
+      </form>
+    </section>
+  </main>
 </body>
 </html>
