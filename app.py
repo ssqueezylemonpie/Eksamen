@@ -1,0 +1,12 @@
+from flask import Flask, render_template
+
+# Flask automatically looks for 'templates' and 'static' in the same directory
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    # Pass dynamic content to the template if needed
+    return render_template('index.html', title="Welcome Page")
+
+if __name__ == '__main__':
+    app.run(debug=True)
