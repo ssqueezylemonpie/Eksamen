@@ -6,36 +6,122 @@ This is a simple ticket management web app built with Python and Flask. It shows
 
 ## What you need before you start
 
-1. Python 3 installed.
-2. MariaDB (or MySQL compatible database) installed.
-3. A terminal/command line.
+- Python 3 installed.
+- MariaDB or MySQL installed.
+- A text editor and terminal / command prompt.
+- Basic comfort opening a folder and running a command.
 
-## Install Python dependencies
+## Install dependencies
 
-Open a terminal in the project folder (`/home/stian/eksamen/Eksamen`) and run:
+### Windows
 
-```bash
-python3 -m pip install flask mariadb
+1. Open PowerShell or Command Prompt.
+2. Navigate to the project folder. Example:
+
+```powershell
+cd C:\path\to\Eksamen
 ```
 
-If your system uses `python` instead of `python3`, use:
+3. Install the required Python packages:
 
-```bash
+```powershell
+python -m pip install --upgrade pip
 python -m pip install flask mariadb
 ```
 
-## Set up the database
+If `python` is not found, try `py` instead:
 
-The app expects a MariaDB database named `eksamen` and two tables: `users` and `tickets`.
-
-1. Start MariaDB.
-2. Open the MariaDB shell:
-
-```bash
-sudo mariadb
+```powershell
+py -m pip install --upgrade pip
+py -m pip install flask mariadb
 ```
 
-3. Run the following SQL commands:
+### macOS
+
+1. Open Terminal.
+2. Navigate to the project folder:
+
+```bash
+cd /path/to/Eksamen
+```
+
+3. Install the required Python packages:
+
+```bash
+python3 -m pip install --upgrade pip
+python3 -m pip install flask mariadb
+```
+
+If your system uses `python` instead of `python3`, replace `python3` with `python`.
+
+### Linux
+
+1. Open Terminal.
+2. Navigate to the project folder:
+
+```bash
+cd /path/to/Eksamen
+```
+
+3. Install the required Python packages:
+
+```bash
+python3 -m pip install --upgrade pip
+python3 -m pip install flask mariadb
+```
+
+If your system uses `python` instead of `python3`, replace `python3` with `python`.
+
+## Install MariaDB / MySQL
+
+### Windows
+
+1. Download MariaDB from https://mariadb.org/download/ or install MySQL from https://dev.mysql.com/downloads/.
+2. Follow the installer instructions.
+3. Remember your database username and password.
+4. Open `MariaDB x.x Command Line Client` or use PowerShell with the `mysql` command.
+
+### macOS
+
+Use Homebrew if you have it installed:
+
+```bash
+brew install mariadb
+brew services start mariadb
+```
+
+If you prefer MySQL:
+
+```bash
+brew install mysql
+brew services start mysql
+```
+
+### Linux
+
+On Debian/Ubuntu:
+
+```bash
+sudo apt update
+sudo apt install mariadb-server
+sudo systemctl start mariadb
+```
+
+On Fedora/CentOS:
+
+```bash
+sudo dnf install mariadb-server
+sudo systemctl start mariadb
+```
+
+## Create the database and tables
+
+1. Open your database shell.
+
+- Windows: use the MariaDB Command Line Client or `mysql` in PowerShell.
+- macOS / Linux: use Terminal and run `sudo mariadb` or `mysql -u root -p`.
+
+2. Run these commands:
 
 ```sql
 CREATE DATABASE eksamen;
@@ -61,15 +147,15 @@ INSERT INTO users (username) VALUES
   ('Theo');
 ```
 
-4. Exit the MariaDB shell:
+3. Exit the database shell:
 
 ```sql
 EXIT;
 ```
 
-## Configure the database connection
+## Configure the project
 
-Open `app.py` and check the `get_db_connection()` function. Make sure the database settings match your MariaDB setup:
+Open `app.py` and check the `get_db_connection()` function. Update the connection settings if your database username, password, host, or port are different.
 
 ```python
 def get_db_connection():
@@ -82,17 +168,27 @@ def get_db_connection():
     )
 ```
 
-If your username, password, host, or port are different, update them here.
+If you changed your MariaDB password during setup, replace `1234` with the correct password.
 
 ## Run the app
 
-From the project folder, run:
+From the project folder, start the app.
+
+### Windows
+
+```powershell
+python app.py
+```
+
+### macOS / Linux
 
 ```bash
 python3 app.py
 ```
 
-If the app starts successfully, open a browser and go to:
+If your system uses `python` instead of `python3`, use `python app.py`.
+
+Open your browser and go to:
 
 ```text
 http://localhost:5000
@@ -102,35 +198,52 @@ http://localhost:5000
 
 On the homepage you will see:
 
-- Total tickets count
-- Open tickets count
-- A form to add a new ticket
-- A table listing all existing tickets
+- Total number of tickets.
+- Number of open tickets.
+- A form to create a new ticket.
+- A list of existing tickets.
 
 To add a ticket:
 
 1. Enter a title.
-2. Choose a status (`Open`, `In progress`, or `Done`).
-3. Choose a user from the list, or leave it unassigned.
-4. Click `Create ticket`.
+2. Choose a ticket status.
+3. Select a user from the dropdown.
+4. Click the button to create the ticket.
 
-The ticket saves to the database and the page refreshes with the new ticket.
+The ticket is saved in the database and the page updates automatically.
 
-## Troubleshooting
+## Common problems and solutions
 
-- If the page does not load, make sure Flask is installed.
-- If the app fails to connect to the database, check the `user`, `password`, `database`, and `port` values in `app.py`.
-- If you see an empty user dropdown, make sure the `users` table contains at least one record.
+- App does not start:
+  - Make sure Flask and mariadb packages are installed.
+  - Check that you are running the command from the project folder.
 
-## Notes for complete beginners
+- Browser shows an error or blank page:
+  - Verify that the app is running and using port `5000`.
+  - Open `http://localhost:5000` exactly.
 
-- This app is designed to run locally on your computer.
-- It does not include advanced security or production settings.
-- Do not use the default password `1234` in a real project. Change it to a stronger one.
-- If you want to stop the app, press `Ctrl+C` in the terminal where it is running.
+- Database connection error:
+  - Open `app.py` and confirm the host, user, password, database, and port values.
+  - Make sure MariaDB service is running.
 
-## Optional improvements
+- No users appear in the dropdown:
+  - Check that the `users` table contains at least one record.
+  - Use the SQL `INSERT INTO users (...) VALUES (...)` command if needed.
 
-- Add user login and authentication.
-- Add ticket editing and deletion.
-- Use environment variables for the database password instead of hardcoding it.
+## What this project does
+
+- Connects to a MariaDB database.
+- Shows total tickets and open tickets.
+- Displays tickets with assigned user names.
+- Lets you add new tickets.
+
+## Stop the app
+
+Press `Ctrl+C` in the terminal where the app is running.
+
+## Beginner tips
+
+- This app runs locally on your computer.
+- The password in `app.py` is only for local testing.
+- In a real project, do not hardcode passwords in source code.
+- You can change the text or styles in `templates/index.html` and `static/style.css`.
