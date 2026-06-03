@@ -1,48 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{{ title }}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-</head>
-<body>
-  <main class="container">
-    <section class="hero">
-      <p class="eyebrow">Exam Project</p>
-      <h1>{{ title }}</h1>
-      <p>A simple web app for tracking tickets and tasks.</p>
-    </section>
+<section class="cards">
+  <article class="card">
+    <h2>Total tickets</h2>
+    <p>{{ total_tickets }}</p>   <!-- was hardcoded 0 -->
+  </article>
 
-    <section class="cards">
-      <article class="card">
-        <h2>Total tickets</h2>
-        <p>0</p>
-      </article>
+  <article class="card">
+    <h2>Open tickets</h2>
+    <p>{{ open_tickets }}</p>    <!-- was hardcoded 0 -->
+  </article>
+</section>
 
-      <article class="card">
-        <h2>Open tickets</h2>
-        <p>0</p>
-      </article>
-    </section>
+<section class="panel">
+  <h2>Add a ticket</h2>
 
-    <section class="panel">
-      <h2>Add a ticket</h2>
+  <form action="/add" method="POST">   <!-- added action + method -->
+    <label for="title">Title</label>
+    <input id="title" name="title" type="text" placeholder="Write ticket title" required />
 
-      <form>
-        <label for="title">Title</label>
-        <input id="title" type="text" placeholder="Write ticket title" />
+    <label for="status">Status</label>
+    <select id="status" name="status">
+      <option>Open</option>
+      <option>In progress</option>
+      <option>Done</option>
+    </select>
 
-        <label for="status">Status</label>
-        <select id="status">
-          <option>Open</option>
-          <option>In progress</option>
-          <option>Done</option>
-        </select>
+    <label for="user_id">Assign to user</label>
+    <select id="user_id" name="user_id">
+      <option value="">— Unassigned —</option>
+      {% for user in users %}
+        <option value="{{ user[0] }}">{{ user[1] }}</option>
+      {% endfor %}
+    </select>
 
-        <button type="submit">Create ticket</button>
-      </form>
-    </section>
-  </main>
-</body>
-</html>
+    <button type="submit">Create ticket</button>
+  </form>
+</section>
+
+<section class="panel" style="margin-top: 24px;">
+  <h2>All tickets</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Title</th>
+        <th>Status</th>
+        <th>Assigned to</th>
+        <th>Created</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for ticket in tickets %}
+      <tr>
+        <td>{{ ticket[0] }}</td>
+        <td>{{ ticket[1] }}</td>
+        <td>{{ ticket[2] }}</td>
+        <td>{{ ticket[3] or "Unassigned" }}</td>
+        <td>{{ ticket[4] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
